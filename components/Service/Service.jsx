@@ -4,8 +4,8 @@ function Service() {
   return (
     <div className="w-screen p-6">
         <div className="mx-auto mt-10 w-full max-w-screen-xl px-4">
-            <div className="w-12 border-b-2 border-blue-500 lg:border-b-4"></div>
-            <h2 className="mt-6 mb-10 text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">Our Services</h2> 
+            <div className="flex flex-col items-center"><div className="w-20 border-b-2 border-blue-500 lg:border-b-4 text-center"></div></div>
+            <h2 className="mt-6 mb-10 text-3xl font-bold tracking-wide text-blue-900 sm:text-4xl xl:text-5xl text-center">Our Services</h2> 
             <div className="flex flex-col justify-between lg:flex-row lg:flex-wrap">
                 <div className="mt-8 lg:mt-10 lg:w-1/2">
                 <div className="flex flex-col items-start lg:pr-16">
