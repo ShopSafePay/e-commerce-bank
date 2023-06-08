@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Service() {
+const Service = () => {
   return (
     <div className="w-screen p-6">
         <div className="mx-auto mt-10 w-full max-w-screen-xl px-4">
