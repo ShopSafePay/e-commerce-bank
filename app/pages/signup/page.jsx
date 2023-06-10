@@ -1,10 +1,12 @@
 'use client'
 
 import React, { useState } from 'react'
-import { signIn } from 'next-auth/react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import {useRouter} from 'next/router'
+import axios from 'axios'
 
+const router = useRouter();
 
 
 
@@ -25,35 +27,19 @@ const Signup = () => {
       toast.error("Password must be at least 6 characters")
       return
     }
+
+    axios
+    .post("/api/register",email,password,name)
+    .then((res)=>{
+      router.push('/pages/login')
+    })
+    .catch((err)=>{
+      toast.error(err.response.data.error)
+    })
     
-    try{
-
-      const res = await fetch('https://localhost/3000/api/register',{
-        headers: {
-          'Content-Type': 'applicaton/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({email,name,password})
-      })
-
-      console.log(await res.json())
-
-      if(res.ok){
-        toast.success("Successfully registered the user")
-        setTimeout(() => {
-          signIn()
-        }, 1500)
-        return
-
-      }else{
-        toast.error("Error occured when registering")
-        return
-      }
+    
 
 
-    }catch(err){
-      console.log(err)
-    }
 
 
   }
@@ -69,17 +55,17 @@ const Signup = () => {
             <h1 className="text-3xl font-black text-slate-700">Sign up</h1>
             <p className="mt-2 mb-5 text-base leading-tight text-gray-600">Sign up now and unleash the power of DogeBank</p>
             <form className="mt-8" onSubmit={handleSubmit}>
-              <div className="relative mt-2 w-full">
-                <input type="text" name="email" className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " onChange={(e) => setEmail(e.target.value)} />
-                <label className="absolute top-2 left-1 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-text select-none bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600"> Enter Your Email </label>
+              <div className="mb-4">
+                <label htmlFor="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
+                <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" placeholder="Enter your email" onChange={(e)=>{setEmail(e.target.value)}}/>
               </div>
-              <div className="relative mt-2 w-full">
-                <input type="text" name="name" className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " onChange={(e) => setName(e.target.value)}/>
-                <label className="absolute top-2 left-1 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-text select-none bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600"> Enter Your Name</label>
+              <div className="mb-4">
+                <label htmlFor="name" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Name</label>
+                <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="name" name="name" placeholder="Enter your name" onChange={(e)=>{setName(e.target.value)}}/>
               </div>
-              <div className="relative mt-2 w-full">
-                <input type="text" name="password" className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " onChange={(e) => setPassword(e.target.value)}/>
-                <label className="absolute top-2 left-1 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-text select-none bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600"> Enter Your Password</label>
+              <div className="mb-4">
+                <label htmlFor="password" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Password</label>
+                <input type="password" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="password" name="password" placeholder="Enter your password" onChange={(e)=>{setPassword(e.target.value)}}/>
               </div>
               <input className="mt-4 w-full cursor-pointer rounded-lg bg-blue-600 pt-3 pb-3 text-white shadow-lg hover:bg-blue-400" type="submit" value="Create account" />
             </form>
