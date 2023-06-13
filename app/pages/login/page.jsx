@@ -1,6 +1,57 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+
+
 
 function Login() {
+
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = async(e) => {
+    e.preventDefault()
+
+    console.log(email, password)
+
+    if(email == '' || password == ''){
+      alert("Fill all fields")
+      return
+    }
+    if(password.length < 6){
+      alert("Password must be at least 6 characters")
+      return
+    }
+
+    try {
+
+      const res = await signIn('credentials', {
+        redirect: false,
+        email,
+        password
+      })
+
+      if(res.error == null){
+        router.push('/pages/dashboard')
+      }
+      else {
+        console.log(res.error)
+      }
+
+      
+
+      
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
+
+
   return (
   <div className="flex min-h-screen w-screen w-full items-center justify-center text-gray-600 bg-gray-50">
     <div className="relative">
@@ -24,10 +75,10 @@ function Login() {
           {/* <h4 className="mb-2 font-medium text-gray-700 xl:text-xl">Welcome to Doge<span>Bank</span></h4> */}
           <p className="mb-6 text-gray-500">Please sign-in to access your account</p>
   
-          <form id="" className="mb-4" action="#" method="POST">
+          <form id="" className="mb-4" onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label htmlFor="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email or Username</label>
-              <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email-username" placeholder="Enter your email"  />
+              <label htmlFor="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
+              <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" placeholder="Enter your email"  onChange={(e) => setEmail(e.target.value)}/>
             </div>
             <div className="mb-4">
               <div className="flex justify-between">
@@ -37,7 +88,7 @@ function Login() {
                 </a>
               </div>
               <div className="relative flex w-full flex-wrap items-stretch">
-                <input type="password" id="password" className="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" name="password" placeholder="Enter your password" />
+                <input type="password" id="password" className="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" name="password" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)}/>
               </div>
             </div>
             <div className="mb-4">

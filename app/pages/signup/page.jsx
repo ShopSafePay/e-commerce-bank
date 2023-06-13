@@ -3,14 +3,16 @@
 import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import {useRouter} from 'next/router'
+import {useRouter} from 'next/navigation'
 import axios from 'axios'
 
-const router = useRouter();
+
 
 
 
 const Signup = () => {
+
+  const router = useRouter();
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,18 +20,20 @@ const Signup = () => {
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
+
+    console.log(name, email, password);
     
-    if(name === '' || email === '' || password === ''){
-      toast.error("Fill all fields");
+    if(name == '' || email == '' || password == ''){
+      alert("Fill all fields");
       return
     }
     if(password.length < 6){
-      toast.error("Password must be at least 6 characters")
+      alert("Password must be at least 6 characters")
       return
     }
 
     axios
-    .post("/api/register",email,password,name)
+    .post("/api/register",{email,password,name})
     .then((res)=>{
       router.push('/pages/login')
     })
