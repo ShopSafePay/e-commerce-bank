@@ -38,7 +38,7 @@ const Signup = () => {
       router.push('/pages/login')
     })
     .catch((err)=>{
-      toast.error(err.response.data.error)
+      alert(err.response.data.error)
     })
     
     

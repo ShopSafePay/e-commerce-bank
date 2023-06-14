@@ -12,7 +12,7 @@ const handler = NextAuth({
             type: 'credentials',
             credentials: {
                 email: {
-                    label: "Email", type: "email", placeholder: ""
+                    label: "Email", type: "email", placeholder: "mahin"
                 },
                 password: {
                     label: "Password", type: "password",placeholder: ""
@@ -20,22 +20,29 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 const { email, password } = credentials;
-                await db.connect();
+                await db();
 
                 const user = await User.findOne({ email })
+
+            
+
                 if (!user) {
                     throw new Error("Invalid credentials");
                 }
                 const isValid = await bcrypt.compare(password, user.password);
 
+               
+
                 if (!isValid) {
                     throw new Error("Invalid Input");
                 }
                 else {
-                    const { password, ...currentUser } = user._doc;
+                    const {password, ...currentUser} = user
                     const accessToken = signJwtToken(currentUser, { expiresIn: '1d' });
+                    return { ...currentUser, accessToken };
                 }
-                return { ...currentUser, accessToken };
+                
+                
             }
         })
     ],
@@ -43,20 +50,14 @@ const handler = NextAuth({
         signIn: '/pages/login',
     },
     callbacks: {
-        async jwt(token, user) {
-            if (user) {
-                token.accessToken = user.accessToken;
-                token._id = user._id;
-            }
-            return token;
+        async jwt({ token, user }) {
+            return { ...token, ...user };
         },
-        async session(session, token) {
-            if (token) {
-                session.user._id = token._id;
-                session.user.accessToken = token.accessToken;
-            }
+      
+          async session({ session, token }) {
+            session.user = token 
             return session;
-        }
+        },
     }
 
         

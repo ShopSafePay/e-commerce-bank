@@ -34,14 +34,12 @@ function Login() {
         password
       })
 
-      if(res.error == null){
-        router.push('/pages/dashboard')
-      }
-      else {
-        console.log(res.error)
+      if(res.error != null){
+        alert(res.error)
+        return 
       }
 
-      
+      router.push("/pages/dashboard")
 
       
     }catch(err){
