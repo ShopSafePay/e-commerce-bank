@@ -1,10 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import {useRouter} from 'next/navigation'
-import axios from 'axios'
+
 
 
 
@@ -14,12 +12,14 @@ const Signup = () => {
 
   const router = useRouter();
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-
+  const [error, setError] = useState(null);
+ 
   const handleSubmit = async(e) =>{
     e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
     console.log(name, email, password);
     
@@ -32,19 +32,24 @@ const Signup = () => {
       return
     }
 
-    axios
-    .post("/api/register",{email,password,name})
-    .then((res)=>{
-      router.push('/pages/login')
-    })
-    .catch((err)=>{
-      alert(err.response.data.error)
-    })
-    
-    
+    try {
 
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      })
 
+      res.status === 201 && router.push('/pages/login?success=Account created successfully')
+      res.status === 409 && setError('Email already exists!') 
 
+    } catch (error) {
+      setError(error)
+      console.log(error)
+    } 
+
+    e.target.reset()
+  
 
   }
 
@@ -60,18 +65,19 @@ const Signup = () => {
             <p className="mt-2 mb-5 text-base leading-tight text-gray-600">Sign up now and unleash the power of DogeBank</p>
             <form className="mt-8" onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
-                <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" placeholder="Enter your email" onChange={(e)=>{setEmail(e.target.value)}}/>
+                <label className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
+                <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" placeholder="Enter your email" />
               </div>
               <div className="mb-4">
-                <label htmlFor="name" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Name</label>
-                <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="name" name="name" placeholder="Enter your name" onChange={(e)=>{setName(e.target.value)}}/>
+                <label className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Name</label>
+                <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="name" name="name" placeholder="Enter your name" />
               </div>
               <div className="mb-4">
-                <label htmlFor="password" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Password</label>
-                <input type="password" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="password" name="password" placeholder="Enter your password" onChange={(e)=>{setPassword(e.target.value)}}/>
+                <label className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Password</label>
+                <input type="password" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="password" name="password" placeholder="Enter your password" />
               </div>
               <input className="mt-4 w-full cursor-pointer rounded-lg bg-blue-600 pt-3 pb-3 text-white shadow-lg hover:bg-blue-400" type="submit" value="Create account" />
+              {error && <p className="mt-4 text-red-500">{ error }</p>}
             </form>
             <div className="mt-4 text-center">
               <p className="text-sm text-gray-600">Already have an account? <a href="/pages/login" className="font-bold text-blue-600 no-underline hover:text-blue-400">Sign in</a></p>

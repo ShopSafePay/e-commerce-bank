@@ -1,41 +1,44 @@
 import db from '@/lib/db'
 import User from '@/models/User'
 import bcrypt from 'bcrypt'
+import { NextResponse } from 'next/server'
 
-export async function POST(req) {
+export const POST = async (req) => {
+
+    await db()
+
+    const { name, email, password: pass } = await req.json()
+
+    const isExisting = await User.findOne({ email })
+
+    if (isExisting) {
+        return new NextResponse("User already exist", {status: 409})
+    }
+
+    const hashedPassword = await bcrypt.hash(pass, 10)
+
+    const account = Math.floor(Math.pow(10, 9) + Math.random() * (Math.pow(10, 10) - Math.pow(10, 9) - 1))
+
+    const balance = 100000
+    
+    const newUser = await User({
+        name,
+        email,
+        password: hashedPassword,
+        account,
+        balance
+    })
 
     try {
-        await db()
-        const { name, email, password: pass } = await req.json()
-      
-        const isExisting = await User.findOne({ email })
-        if (isExisting) {
-            throw new Error('User already exists')
-        }
-
-        const account = Math.floor(Math.pow(10,9)+Math.random() *( Math.pow(10,10)-Math.pow(10,9)-1))
-
-        const hashedPassword = await bcrypt.hash(pass, 10)
-
+       
+        await newUser.save()
         
-
-        const newUser = await User.create({
-            name,
-            email,
-            password: hashedPassword,
-            account
-        })
-
-        console.log(name, email, pass)
-
-        const { password, ...user } = newUser._doc
-        
-        return new Response(JSON.stringify(user), {status: 201})
+        return new NextResponse("User has been created", {status: 201})
 
 
        
     } catch (err) {
-        return new Response(JSON.stringify(err.message), {status: 500})
+        return new NextResponse(err.message, {status: 500})
     }
 
    

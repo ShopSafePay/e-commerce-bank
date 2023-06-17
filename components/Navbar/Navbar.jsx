@@ -1,6 +1,28 @@
-import React from 'react'
+'use client'
+import { useEffect, useState } from "react"
 
 const Navbar = () => {
+
+  const [loggedIn, setLoggedIn] = useState(false)
+ 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      setLoggedIn(true)
+    }
+    
+  }, [])
+
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+  }
+
+
+
+ 
+
   return (
     <div className="w-full bg-white sticky top-0 z-30">
 
@@ -17,10 +39,13 @@ const Navbar = () => {
           </label>
           <nav aria-label="Header Navigation" className="peer-checked:block hidden pl-2 py-6 sm:block sm:py-0">
             <ul className="flex flex-col gap-y-4 sm:flex-row sm:gap-x-8">
+              {loggedIn && <li className=""><a className="text-gray-600 hover:text-blue-600" href="/pages/dashboard">Home</a></li>}
               <li className=""><a className="text-gray-600 hover:text-blue-600" href="/pages/contact">Contact Us</a></li>
               <li className=""><a className="text-gray-600 hover:text-blue-600" href="/pages/faq">FAQ</a></li>
+
             
-              <li className="mt-2 sm:mt-0"><a className="rounded-xl border-2 border-blue-600 px-6 py-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white" href="/pages/login">Login</a></li>
+              {loggedIn ? <li className="mt-2 sm:mt-0"><a className="rounded-xl border-2 border-blue-600 px-6 py-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white" href="/" onClick={handleLogout}>Logout</a></li> 
+              : <li className="mt-2 sm:mt-0"><a className="rounded-xl border-2 border-blue-600 px-6 py-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white" href="/pages/login">Login</a></li>}
             </ul>
           </nav>
         </div>

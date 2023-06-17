@@ -21,9 +21,9 @@ const Footer = () => {
             <div className="mt-4 mb-2 font-medium xl:mb-4">Links</div>
             <nav aria-label="Footer Navigation" className="text-gray-500">
             <ul className="space-y-3">
-                <li><a className="hover:text-blue-600 hover:underline" href="#">FAQ</a></li>
-                <li><a className="hover:text-blue-600 hover:underline" href="#">Support Hub</a></li>
-                <li><a className="hover:text-blue-600 hover:underline" href="#">Contact</a></li>
+                <li><a className="hover:text-blue-600 hover:underline" href="/pages/faq">FAQ</a></li>
+                <li><a className="hover:text-blue-600 hover:underline" href="/pages/contact">Contact</a></li>
+                <li><a className="hover:text-blue-600 hover:underline" href="/pages/about">About</a></li>
             </ul>
             </nav>
         </div>

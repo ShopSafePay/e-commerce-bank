@@ -1,56 +1,58 @@
 'use client'
 
-import {signIn,signOut,useSession} from 'next-auth/react'
+import jwt from 'jsonwebtoken'
+import { useEffect } from 'react'
 
-const dashboard = () => {
 
-  const {...session} = useSession()
-  console.log(session)
+
+const dashboard = async(res) => {
+
+
+
+  useEffect(() => {
+
+    const token = localStorage.getItem('token')
+    const data = jwt.decode(token)
+    console.log(data.email)
+  
+    
+  },[])
+
+  
+
   return (
     
     <div>
       
       <div className="m-10 grid gap-5 sm:grid-cols-3  mx-auto max-w-screen-lg">
+
+        <div className="px-4 py-6 shadow-lg shadow-blue-100">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 rounded-xl bg-rose-400 p-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+          </svg>
+          <p className="mt-4 font-medium">User</p>
+          <p className="mt-2 text-xl font-medium"> mahin </p>
+         
+        </div>
+        <div className="px-4 py-6 shadow-lg shadow-blue-100">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 rounded-xl bg-green-400 p-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="mt-4 font-medium">Balance</p>
+          <p className="mt-2 text-xl font-medium"> 100 </p>
+         
+        </div>
+
         <div className="px-4 py-6 shadow-lg shadow-blue-100">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 rounded-xl bg-blue-400 p-4 text-white" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+            <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
           </svg>
-          <p className="mt-4 font-medium">Sessions</p>
-          <p className="mt-2 text-xl font-medium">
-            23.4k
-            <svg xmlns="http://www.w3.org/2000/svg" className="inline h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </svg>
-          </p>
-          <span className="text-xs text-gray-400">+4.9%</span>
+          <p className="mt-4 font-medium">Secret Key</p>
+          <p className="mt-2 text-xl font-medium">23.4</p>
+         
         </div>
-        <div className="px-4 py-6 shadow-lg shadow-blue-100">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 rounded-xl bg-rose-400 p-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-          </svg>
-          <p className="mt-4 font-medium">Users</p>
-          <p className="mt-2 text-xl font-medium">
-            23.4k
-            <svg xmlns="http://www.w3.org/2000/svg" className="inline h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </svg>
-          </p>
-          <span className="text-xs text-gray-400">+4.9%</span>
-        </div>
-        <div className="px-4 py-6 shadow-lg shadow-blue-100">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 rounded-xl bg-green-400 p-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="mt-4 font-medium">Revenue</p>
-          <p className="mt-2 text-xl font-medium">
-            $23.4k
-            <svg xmlns="http://www.w3.org/2000/svg" className="inline h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </svg>
-          </p>
-          <span className="text-xs text-gray-400">+4.9%</span>
-        </div>
+
       </div>
 
 
@@ -62,15 +64,15 @@ const dashboard = () => {
           <div className="mt-4 sm:mt-0">
             <div className="flex items-center justify-start sm:justify-end">
               <div className="flex items-center">
-                <label for="" className="mr-2 flex-shrink-0 text-sm font-medium text-gray-900"> Sort by: </label>
+                <label className="mr-2 flex-shrink-0 text-sm font-medium text-gray-900"> Sort by: </label>
                 <select name="" className="sm: mr-4 block w-full whitespace-pre rounded-lg border p-1 pr-10 text-base outline-none focus:shadow sm:text-sm">
                   <option className="whitespace-no-wrap text-sm">Recent</option>
                 </select>
               </div>
 
               <button type="button" className="inline-flex cursor-pointer items-center rounded-lg border border-gray-400 bg-white py-2 px-3 text-center text-sm font-medium text-gray-800 shadow hover:bg-gray-100 focus:shadow">
-                <svg className="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" className=""></path>
+                <svg className="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" className=""></path>
                 </svg>
                 Export to CSV
               </button>
