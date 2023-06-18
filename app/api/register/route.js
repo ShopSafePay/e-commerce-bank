@@ -20,13 +20,18 @@ export const POST = async (req) => {
     const account = Math.floor(Math.pow(10, 9) + Math.random() * (Math.pow(10, 10) - Math.pow(10, 9) - 1))
 
     const balance = 100000
+
+    const key = generateSecretKey(16)
+
+    console.log(key)
     
     const newUser = await User({
         name,
         email,
         password: hashedPassword,
         account,
-        balance
+        balance,
+        key,
     })
 
     try {
@@ -43,4 +48,16 @@ export const POST = async (req) => {
 
    
 
+}
+
+function generateSecretKey(length) {
+  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let secretKey = '';
+  
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    secretKey += charset[randomIndex];
+  }
+  
+  return secretKey;
 }

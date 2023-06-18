@@ -15,6 +15,7 @@ const dashboard = () => {
       name: '',
       account: '',
       balance: '',
+      key: '',
     }
   )
 
@@ -25,7 +26,7 @@ const dashboard = () => {
     const  data = await res.json()
     console.log(data)
 
-    setUser({...user, name: data[0].name, account: data[0].account, balance: data[0].balance})
+    setUser({...user, name: data[0].name, account: data[0].account, balance: data[0].balance,key: data[0].key})
 
   }
 
@@ -71,7 +72,7 @@ const dashboard = () => {
             <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
           </svg>
           <p className="mt-4 font-medium">Secret Key</p>
-          <p className="mt-2 text-xl font-medium">23.4</p>
+          <p className="mt-2 text-xl font-medium">{user.key}</p>
          
         </div>
 

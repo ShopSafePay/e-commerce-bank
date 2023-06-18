@@ -54,7 +54,6 @@ const Login = () => {
         console.log(data)
         localStorage.setItem('token', data)
 
-        const email = e.target.email.value
 
         router.push('/pages/dashboard')
       }

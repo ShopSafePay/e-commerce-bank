@@ -23,8 +23,8 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     key: {
-        type: Number,
-        required: false
+        type: String,
+        required: true
     }
 })
 
