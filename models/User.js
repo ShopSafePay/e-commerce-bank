@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema({
     account: {
         type: String,
         required: true,
+        unique: true,
     },
     balance: {
         type: Number,
@@ -24,7 +25,8 @@ const UserSchema = new mongoose.Schema({
     },
     key: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
     }
 })
 
