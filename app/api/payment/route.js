@@ -8,8 +8,13 @@ export const POST = async (req) => {
 
         await db()
 
-        const { account, key, total } = await req.json()
+        const { account, key, Total , recieverAccount } = await req.json()
         let user = await User.findOne({ account })
+
+        let ecom = await User.findOne({ account: recieverAccount })
+
+        console.log(user)
+        console.log(key)
         
 
         if(!user) {
@@ -19,13 +24,17 @@ export const POST = async (req) => {
         if(user.key !== key) {
             return new NextResponse(JSON.stringify({data: "Wrong credentials"}), {status: 401})
         }
-        
-        if(user.balance < total) {
+        let bal = parseInt(user.balance);
+        let temp = parseInt(Total)
+        if(bal < temp) {
             return new NextResponse(JSON.stringify({data: "Insufficient funds"}), {status: 401})
         }
 
-        user.balance = user.balance - total
+        user.balance = bal - temp;
+        ecom.balance = parseInt(ecom.balance) + temp;
+        
         await user.save()
+        await ecom.save()
 
         return new NextResponse(JSON.stringify({data: "Success"}), {status: 201})
 
