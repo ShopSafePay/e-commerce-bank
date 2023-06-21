@@ -1,5 +1,6 @@
 import db from "@lib/db";
 import User from "@models/User";
+import Transaction from "@models/Transaction";
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
@@ -36,8 +37,17 @@ export const POST = async (req) => {
     user.balance = bal - temp;
     ecom.balance = parseInt(ecom.balance) + temp;
 
+    const transaction = new Transaction({
+      amount: temp,
+      senderName: user.name,
+      senderId: user._id,
+      receiverName: ecom.name,
+      receiverId: ecom._id,
+    });
+
     await user.save();
     await ecom.save();
+    await transaction.save();
 
     return new NextResponse(JSON.stringify({ data: "Success" }), {
       status: 201,
