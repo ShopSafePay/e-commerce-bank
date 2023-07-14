@@ -1,15 +1,37 @@
 "use client";
 import { useEffect, useState } from "react";
+import jwt from "jsonwebtoken";
 
 const Navbar = () => {
-  const [loggedIn, setLoggedIn] = useState();
+  const [data, setData] = useState({
+    name: "Login",
+    url: "/pages/login",
+    functionName: "handleLogin",
+    home: "",
+    homeUrl: "",
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const decode = jwt.decode(token);
     if (token) {
-      setLoggedIn(true);
-    }else{
-      setLoggedIn(false);
+      setData({
+        ...data,
+        name: "Logout",
+        url: "/",
+        functionName: "handleLogout",
+        home: "Dashboard",
+        homeUrl: "/pages/dashboard",
+      });
+    } else {
+      setData({
+        ...data,
+        name: "Login",
+        url: "/pages/login",
+        functionName: "handleLogin",
+        home: "",
+        homeUrl: "",
+      });
     }
   }, []);
 
@@ -48,16 +70,15 @@ const Navbar = () => {
             className="peer-checked:block hidden pl-2 py-6 sm:block sm:py-0"
           >
             <ul className="flex flex-col gap-y-4 sm:flex-row sm:gap-x-8">
-              {loggedIn && (
-                <li className="">
-                  <a
-                    className="text-gray-600 hover:text-blue-600"
-                    href="/pages/dashboard"
-                  >
-                    Home
-                  </a>
-                </li>
-              )}
+              <li className="">
+                <a
+                  className="text-gray-600 hover:text-blue-600"
+                  href={data.homeUrl}
+                >
+                  {data.home}
+                </a>
+              </li>
+
               <li className="">
                 <a
                   className="text-gray-600 hover:text-blue-600"
@@ -75,26 +96,17 @@ const Navbar = () => {
                 </a>
               </li>
 
-              {loggedIn ? (
-                <li className="mt-2 sm:mt-0">
-                  <a
-                    className="rounded-xl border-2 border-blue-600 px-6 py-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white"
-                    href="/"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </a>
-                </li>
-              ) : (
-                <li className="mt-2 sm:mt-0">
-                  <a
-                    className="rounded-xl border-2 border-blue-600 px-6 py-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white"
-                    href="/pages/login"
-                  >
-                    Login
-                  </a>
-                </li>
-              )}
+              <li className="mt-2 sm:mt-0">
+                <a
+                  className="rounded-xl border-2 border-blue-600 px-6 py-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white"
+                  href={data.url}
+                  onClick={
+                    data.functionName === "handleLogout" ? handleLogout : null
+                  }
+                >
+                  {data.name}
+                </a>
+              </li>
             </ul>
           </nav>
         </div>

@@ -7,7 +7,7 @@ export const POST = async (req) => {
   try {
     await db();
 
-    const { account, key, Total, recieverAccount } = await req.json();
+    const { account, key, Total, recieverAccount, tranId } = await req.json();
     let user = await User.findOne({ account });
 
     let ecom = await User.findOne({ account: recieverAccount });
@@ -43,6 +43,7 @@ export const POST = async (req) => {
       senderId: user._id,
       receiverName: ecom.name,
       receiverId: ecom._id,
+      tranId: tranId,
     });
 
     await user.save();

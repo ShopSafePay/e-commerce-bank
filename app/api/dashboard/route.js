@@ -1,24 +1,24 @@
-import { NextResponse } from "next/server"
-import db from '@/lib/db'
-import User from '@/models/User'
+import { NextResponse } from "next/server";
+import db from "@/lib/db";
+import User from "@/models/User";
+import Transaction from "@models/Transaction";
 
 export const GET = async (req) => {
+  const url = new URL(req.url);
 
-    const url = new URL(req.url);
+  const id = url.searchParams.get("id");
+  console.log(id);
 
-    const email = url.searchParams.get("email");
-    console.log(email)
+  try {
+    await db();
 
-    try{
-        await db()
-
-        const user = await User.find(email && {email})
-        console.log(user)
-
-        return new NextResponse(JSON.stringify(user), {status: 201})
-    } catch(err){
-        return new NextResponse("Database Error", {status: 500})
-    }
-
-
-}
+    const user = await User.findOne({ _id: id });
+    console.log(user);
+   
+    const transactions = await Transaction.find({$or: [{senderId: id}, {receiverId: id}]});
+    console.log(transactions);
+    return new NextResponse(JSON.stringify({usr:user,transactions:transactions}), { status: 201 });
+  } catch (err) {
+    return new NextResponse("Database Error", { status: 500 });
+  }
+};
