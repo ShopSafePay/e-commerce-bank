@@ -19,12 +19,12 @@ const dashboard = () => {
     const res = await fetch(`/api/dashboard?id=${id}`);
 
     const data = await res.json();
-    const {usr,transactions} = data;
-    
+    const { usr, transactions } = data;
+
     console.log(usr);
     console.log(transactions);
 
-    if(usr){
+    if (usr) {
       setUser({
         ...user,
         name: usr.name,
@@ -34,7 +34,7 @@ const dashboard = () => {
         id: usr._id,
       });
     }
-    if(transactions){
+    if (transactions) {
       setTransactions(transactions);
     }
   };
@@ -164,11 +164,8 @@ const dashboard = () => {
             </thead>
 
             <tbody class="lg:border-gray-300">
-              
               {transactions?.map((transaction) => {
-
-                if(transaction.senderId === user.id) {
-
+                if (transaction.senderId === user.id) {
                   return (
                     <tr class="">
                       <td
@@ -189,21 +186,19 @@ const dashboard = () => {
 
                       <td class="whitespace-no-wrap py-4 px-6 text-right text-sm text-gray-600 lg:text-left">
                         ${transaction.amount}
-                        <div class="flex mt-1 ml-auto w-fit items-center rounded-full bg-blue-600 py-2 px-3 text-left text-xs font-medium text-white lg:hidden">
-                          Outgoing
+                        <div class="flex mt-1 ml-auto w-fit items-center rounded-full bg-emerald-500 py-2 px-3 text-left text-xs font-medium text-white lg:hidden">
+                          Credit
                         </div>
                       </td>
 
                       <td class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
-                        <div class="inline-flex items-center rounded-full bg-blue-600 py-2 px-3 text-xs text-white">
-                          Outgoing
+                        <div class="inline-flex items-center rounded-full bg-emerald-500 py-2 px-3 text-xs text-white">
+                          Credit
                         </div>
                       </td>
                     </tr>
                   );
-
-                }
-                else{
+                } else {
                   return (
                     <tr class="">
                       <td
@@ -224,23 +219,20 @@ const dashboard = () => {
 
                       <td class="whitespace-no-wrap py-4 px-6 text-right text-sm text-gray-600 lg:text-left">
                         ${transaction.amount}
-                        <div class="flex mt-1 ml-auto w-fit items-center rounded-full bg-blue-600 py-2 px-3 text-left text-xs font-medium text-white lg:hidden">
-                          Incoming
+                        <div class="flex mt-1 ml-auto w-fit items-center rounded-full bg-red-500 py-2 px-3 text-left text-xs font-medium text-white lg:hidden">
+                          Debit
                         </div>
                       </td>
 
                       <td class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
-                        <div class="inline-flex items-center rounded-full bg-blue-600 py-2 px-3 text-xs text-white">
-                          Incoming
+                        <div class="inline-flex items-center rounded-full bg-red-500 py-2 px-3 text-xs text-white">
+                          Debit
                         </div>
                       </td>
                     </tr>
                   );
                 }
-
-                
               })}
-
             </tbody>
           </table>
         </div>
